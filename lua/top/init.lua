@@ -29,8 +29,23 @@ function M.show(opts)
   -- Change to the window that is floating to ensure termopen uses correct size
   vim.api.nvim_set_current_win(win)
 
+  local bin = cnf:get_options().bin
+  if not bin or bin == '' then
+    vim.notify('top.nvim: Binary option is nil or empty. Please configure it properly.', vim.log.levels.WARN)
+    vim.api.nvim_win_close(win, true)
+    return
+  end
+  if vim.fn.executable(bin) == 0 then
+    vim.notify(
+      string.format('top.nvim: Binary "%s" not found on PATH. Please install it or reconfigure.', bin),
+      vim.log.levels.WARN
+    )
+    vim.api.nvim_win_close(win, true)
+    return
+  end
+
   -- Launch top, and configure to close the window when the process exits
-  vim.fn.jobstart({ cnf:get_options().bin }, {
+  vim.fn.jobstart({ bin }, {
     term = true,
     on_exit = function(_, _, _)
       if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end

@@ -1,6 +1,6 @@
---- @class top.TopConfig
---- @field private opts top.Options Configuration options
-local TopConfig = {
+---@class (exact) top.Config
+---@field private opts top.Options Configuration options
+local Config = {
   opts = {
     bin = 'htop',
     ui = {
@@ -14,7 +14,7 @@ local TopConfig = {
 --- Set configuration options by merging custom options with defaults.
 --- Custom options take precedence over default values using vim.tbl_deep_extend with 'keep' behavior.
 --- @param custom_opts top.Options|nil Custom configuration options to merge with defaults
-function TopConfig:set_options(custom_opts)
+function Config:set_options(custom_opts)
   custom_opts = custom_opts or {}
 
   self.opts = vim.tbl_deep_extend('keep', custom_opts, self.opts)
@@ -22,6 +22,6 @@ end
 
 --- Get the current merged configuration options
 --- @return top.Options The current configuration with all applied customizations
-function TopConfig:get_options() return self.opts end
+function Config:get_options() return self.opts end
 
-return TopConfig
+return Config

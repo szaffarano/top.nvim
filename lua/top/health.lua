@@ -10,12 +10,17 @@ M.check = function()
 
   vim.health.start('top report')
 
-  if vim.fn.executable(bin) == 0 then
-    vim.health.error(string.format('%s not found on path', bin))
+  if not bin or bin == '' then
+    vim.health.error('Binary option is nil or empty. Configure with: require("top").setup({ bin = "htop" })')
     return
   end
 
-  vim.health.ok(string.format('%s found on path', bin))
+  if vim.fn.executable(bin) == 1 then
+    vim.health.ok(string.format('Configured binary "%s" found on path', bin))
+  else
+    vim.health.error(string.format('Configured binary "%s" not found on path', bin))
+    vim.health.info('Install the binary or reconfigure with an available one')
+  end
 end
 
 return M
