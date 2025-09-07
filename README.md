@@ -14,7 +14,6 @@ return {
     ---@type top.Options
     opts = {
       bin = "btop",
-      ---@diagnostic disable-next-line: missing-fields
       ui = {
         border = "rounded",
       },
