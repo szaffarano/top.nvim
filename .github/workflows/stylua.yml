@@ -1,0 +1,27 @@
+name: Lua Formatting
+
+on:
+  pull_request:
+    paths:
+      - "**.lua"
+      - "stylua.toml"
+  push:
+    branches: [main, master]
+    paths:
+      - "**.lua"
+      - "stylua.toml"
+
+jobs:
+  stylua:
+    name: Check Lua formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run StyLua
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
